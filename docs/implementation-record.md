@@ -6,10 +6,34 @@ without reconstructing decisions from chat history.
 
 ## Current status
 
-**Active milestone:** GitOps foundation
+**Active milestone:** Cluster platform bootstrap
 
-**Next milestone:** Argo CD and cluster platform bootstrap after review of the
-foundation branch.
+**Next milestone:** Validate the local Kubernetes context, then install Argo CD and
+bootstrap the cluster platform.
+
+## 2026-08-09 - Platform applications declared for Argo CD bootstrap
+
+### Changed
+
+- Added pinned Argo CD Applications for cert-manager `v1.21.1`, Envoy Gateway
+  `v1.8.3`, and Doppler Kubernetes Operator `1.7.1`.
+- Added the version-controlled Argo CD Helm values and a PowerShell-first bootstrap
+  runbook.
+- Kept public DNS, TLS issuance, Auth0 configuration, Doppler credentials, and
+  application workloads out of the first platform sync.
+
+### Validation
+
+- `kubectl kustomize argocd/apps` renders the Argo project and all three platform
+  Applications.
+- The exact Helm chart versions were checked against their official repositories.
+
+### Follow-up
+
+- The workstation's current `kubectl` configuration falls back to `localhost:8080`.
+  Restore or select the Hetzner kubeconfig before attempting the bootstrap commands.
+- Verify the K3s version, default storage class, installed Traefik state, and node
+  health before exposing Envoy Gateway or scheduling PostgreSQL.
 
 ## 2026-08-09 - GitOps repository and public endpoint strategy established
 

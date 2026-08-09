@@ -9,7 +9,8 @@ evidence has been recorded in `implementation-record.md`.
 - [x] Agree host names under `tatalovic.dev`.
 - [x] Record ownership boundaries and the temporary development database policy.
 - [x] Record the Auth0-protected Argo CD UI design.
-- [ ] Add the Argo CD root application and AppProject.
+- [x] Add the Argo CD root application and AppProject.
+- [x] Declare the pinned cert-manager, Envoy Gateway, and Doppler Operator applications.
 
 ## Milestone 1: Cluster platform bootstrap
 

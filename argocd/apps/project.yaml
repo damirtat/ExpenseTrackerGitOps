@@ -3,10 +3,15 @@ kind: AppProject
 metadata:
   name: expense-tracker
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
 spec:
   description: Expense Tracker platform and application delivery
   sourceRepos:
     - https://github.com/damirtat/ExpenseTrackerGitOps.git
+    - https://charts.jetstack.io
+    - https://helm.doppler.com
+    - oci://docker.io/envoyproxy/gateway-helm
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc
