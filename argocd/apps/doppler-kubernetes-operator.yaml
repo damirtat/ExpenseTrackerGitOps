@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: doppler-kubernetes-operator
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: expense-tracker
+  source:
+    chart: doppler-kubernetes-operator
+    repoURL: https://helm.doppler.com
+    targetRevision: 1.7.1
+    helm:
+      releaseName: doppler-kubernetes-operator
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: doppler-operator-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

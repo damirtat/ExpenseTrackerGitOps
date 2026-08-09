@@ -1,0 +1,16 @@
+# Used only for the one-time Helm installation of Argo CD. After applying the root
+# application, all other platform components are managed through this repository.
+global:
+  domain: argocd.tatalovic.dev
+
+configs:
+  cm:
+    url: https://argocd.tatalovic.dev
+  params:
+    # Envoy Gateway will terminate public TLS later. Keeping Argo CD's internal
+    # server on HTTP avoids double TLS termination inside the cluster.
+    server.insecure: true
+
+server:
+  service:
+    type: ClusterIP
