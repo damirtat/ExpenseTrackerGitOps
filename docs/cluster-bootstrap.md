@@ -35,9 +35,11 @@ kubectl apply -f .\bootstrap\root-application.yaml
 kubectl -n argocd get applications
 ```
 
-The root application creates the dedicated `expense-tracker` Argo project, then its
-child applications install cert-manager, Envoy Gateway, and the Doppler Kubernetes
-Operator. The dependency order is declared through Argo sync waves.
+The root application first creates the dedicated `expense-tracker` Argo project
+through sync wave `-10`. Its three independent platform applications then install
+cert-manager, Envoy Gateway, and the Doppler Kubernetes Operator at sync wave `10`.
+Later application manifests will use additional waves only when a real dependency
+exists.
 
 ## What the first sync does not do
 
