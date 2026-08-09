@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: expense-tracker
+  namespace: argocd
+spec:
+  description: Expense Tracker platform and application delivery
+  sourceRepos:
+    - https://github.com/damirtat/ExpenseTrackerGitOps.git
+  destinations:
+    - namespace: '*'
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  orphanedResources:
+    warn: true

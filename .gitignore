@@ -1,0 +1,14 @@
+# Local Kubernetes and secret material must never become GitOps source files.
+.env
+.env.*
+!.env.example
+*.secret.yaml
+*.secret.yml
+kubeconfig*
+*.pem
+*.key
+
+# Tooling and editor state
+.DS_Store
+.idea/
+.vscode/
