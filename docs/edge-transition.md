@@ -62,8 +62,11 @@ kubectl -n kube-system get deployment traefik
 ```
 
 Do not edit K3s's generated Traefik manifest. K3s recreates generated manifests at
-startup. The supported removal mechanism is the `disable: traefik` server setting,
-as described in the [K3s packaged-components documentation](https://docs.k3s.io/installation/packaged-components).
+startup. The supported removal mechanism is the `disable: traefik` server setting.
+This repository's `disable+: traefik` drop-in is the documented append form of that
+same setting, preserving any existing disabled components from earlier configuration
+files. See the [K3s packaged-components documentation](https://docs.k3s.io/installation/packaged-components)
+and [configuration reference](https://docs.k3s.io/installation/configuration).
 
 Next, follow [Cluster Platform Bootstrap](cluster-bootstrap.md) without delay. Its
 first Argo sync installs Envoy Gateway and restores the Gateway API CRDs needed for
