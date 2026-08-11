@@ -38,6 +38,7 @@ GitHub Actions -> GHCR -> GitOps image reference -> Argo CD -> K3s
 | GitHub Actions | test and publish immutable images | application repositories |
 | GHCR | retain published images | GitHub |
 | GitOps repository | desired platform and workload configuration | this repository |
+| K3s server configuration | host-level settings, including disabling bundled Traefik | tracked here, applied once by a cluster administrator |
 | Argo CD | reconcile declared Git state to the cluster | K3s, bootstrapped once |
 | Envoy Gateway | public HTTP(S) routing | Argo CD after bootstrap |
 | cert-manager | TLS certificates using Cloudflare DNS validation | Argo CD after bootstrap |
@@ -55,8 +56,9 @@ and applies the difference. If a manual cluster edit drifts from Git, Argo can r
 or correct that drift.
 
 Argo CD does **not** build images, create Cloudflare DNS records, create Hetzner
-servers, or invent secrets. Those responsibilities remain with GitHub Actions,
-Cloudflare, Hetzner, and Doppler respectively.
+servers, change K3s server startup configuration, or invent secrets. Those
+responsibilities remain with GitHub Actions, Cloudflare, Hetzner, the reviewed K3s
+bootstrap runbook, and Doppler respectively.
 
 ## Development database policy
 

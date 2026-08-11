@@ -12,9 +12,11 @@ evidence has been recorded in `implementation-record.md`.
 - [x] Add the Argo CD root application and AppProject.
 - [x] Declare the pinned cert-manager, Envoy Gateway, and Doppler Operator applications.
 
-## Milestone 1: Cluster platform bootstrap
+## Milestone 1: K3s edge transition and cluster platform bootstrap
 
-- [ ] Verify current K3s access and node health.
+- [x] Verify current K3s access and node health.
+- [x] Declare the K3s Traefik-to-Envoy transition in version control.
+- [ ] Apply the reviewed K3s Traefik disablement on the control-plane server.
 - [ ] Install Argo CD once with a reviewed bootstrap command.
 - [ ] Apply the root Argo CD application that watches this repository.
 - [ ] Add cert-manager with a Cloudflare DNS-01 `ClusterIssuer`.

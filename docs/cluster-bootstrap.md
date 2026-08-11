@@ -6,20 +6,26 @@ the Hetzner K3s cluster.
 
 ## Preconditions
 
-Run these read-only checks first. They must show the Hetzner nodes, not
-`localhost:8080`.
+First complete the versioned [K3s edge transition](edge-transition.md). It disables
+K3s Traefik so Envoy Gateway can own the public edge. Run these read-only checks
+next. They must show the Hetzner nodes, not `localhost:8080`.
 
 ```powershell
 kubectl config get-contexts
 kubectl cluster-info
 kubectl get nodes -o wide
 kubectl get storageclass
-kubectl get pods -A
+kubectl -n kube-system get deployment traefik
 ```
 
 Also verify the firewall currently permits this workstation to reach the K3s API on
 port `6443`. A dynamic home IP may require updating the Hetzner firewall before these
 commands work.
+
+The final Traefik command is expected to return `NotFound`. On this K3s version,
+disabling Traefik temporarily removes Gateway API CRDs. Do not delay the root
+application sync after the Argo CD installation, because Envoy Gateway restores those
+CRDs during its first sync.
 
 ## One-time Argo CD installation
 

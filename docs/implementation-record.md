@@ -6,10 +6,36 @@ without reconstructing decisions from chat history.
 
 ## Current status
 
-**Active milestone:** Cluster platform bootstrap
+**Active milestone:** K3s edge transition and cluster platform bootstrap
 
-**Next milestone:** Validate the local Kubernetes context, then install Argo CD and
-bootstrap the cluster platform.
+**Next milestone:** Apply the reviewed K3s edge configuration, then install Argo CD
+and bootstrap the cluster platform.
+
+## 2026-08-09 - K3s edge transition declared
+
+### Changed
+
+- Added a versioned K3s server drop-in that disables the bundled Traefik AddOn without
+  replacing any earlier `disable` settings.
+- Added an edge-transition runbook that keeps the one required host-level change
+  reviewable and repeatable.
+- Made the K3s-to-Envoy ordering explicit in the bootstrap documentation and
+  architecture boundary.
+
+### Validation
+
+- The Hetzner cluster kubeconfig reaches K3s `v1.35.4+k3s1`; its control-plane and
+  two workers are Ready, and K3s Traefik is currently installed.
+- K3s documents alphabetical configuration drop-ins and the `+` append syntax.
+- K3s documents that disabling an existing Traefik AddOn on this release removes
+  Gateway API CRDs. The pinned Envoy Gateway chart installs compatible Gateway API
+  and Envoy Gateway CRDs during the first Argo sync.
+
+### Follow-up
+
+- Review and merge this declaration before changing the control plane.
+- Apply the tracked drop-in only while no workload relies on Traefik or Gateway API.
+- Install Argo CD and apply the root application immediately afterward.
 
 ## 2026-08-09 - Platform applications declared for Argo CD bootstrap
 
