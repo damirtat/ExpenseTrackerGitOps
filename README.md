@@ -53,7 +53,11 @@ See [architecture](docs/architecture.md), [roadmap](docs/roadmap.md), and the
 
 ## Initial bootstrap
 
-The only bootstrap action that remains manual is applying
-[`bootstrap/root-application.yaml`](bootstrap/root-application.yaml) after Argo CD
-itself has been installed. That application watches `argocd/apps/`; every subsequent
-platform or workload component is declared there and reconciled by Argo CD.
+Two deliberately small, versioned bootstrap actions remain manual:
+
+1. Apply the [K3s edge transition](docs/edge-transition.md) on the control plane.
+   This disables K3s's bundled Traefik before Envoy Gateway is installed.
+2. Install Argo CD, then apply
+   [`bootstrap/root-application.yaml`](bootstrap/root-application.yaml). That
+   application watches `argocd/apps/`; every subsequent platform or workload
+   component is declared there and reconciled by Argo CD.

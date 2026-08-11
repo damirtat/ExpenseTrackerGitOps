@@ -1,0 +1,8 @@
+# K3s server configuration drop-in.
+#
+# Install this file on every K3s server node as:
+# /etc/rancher/k3s/config.yaml.d/90-expense-tracker-edge.yaml
+#
+# The `+` preserves any components disabled by earlier configuration files.
+disable+:
+  - traefik
