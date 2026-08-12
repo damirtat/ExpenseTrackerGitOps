@@ -1,8 +1,8 @@
 # Expense Tracker GitOps
 
-This repository is the desired-state source for the Expense Tracker platform and
-Kubernetes deployments. Argo CD will reconcile the manifests in this repository
-onto the Hetzner K3s cluster.
+This repository is the desired-state source for Expense Tracker Kubernetes
+deployments. Argo CD reconciles these application manifests onto the K3s
+cluster after the shared cluster platform is available.
 
 Application code is kept separate:
 
@@ -15,9 +15,9 @@ Application code is kept separate:
 Application repositories                    This repository                 Hetzner K3s
 ------------------------                    ---------------                 -----------
 PR -> test -> image in GHCR  ----image ref-> reviewed desired state  ->     Argo CD syncs it
-                                                                          -> Envoy Gateway routes it
-                                                                          -> cert-manager provides TLS
-                                                                          -> Doppler syncs runtime secrets
+                                                                          -> shared platform routes it
+                                                                          -> shared platform provides TLS
+                                                                          -> Doppler syncs app secrets
 ```
 
 GitHub Actions builds and tests application images. It does not receive cluster
@@ -53,11 +53,7 @@ See [architecture](docs/architecture.md), [roadmap](docs/roadmap.md), and the
 
 ## Initial bootstrap
 
-Two deliberately small, versioned bootstrap actions remain manual:
-
-1. Apply the [K3s edge transition](docs/edge-transition.md) on the control plane.
-   This disables K3s's bundled Traefik before Envoy Gateway is installed.
-2. Install Argo CD, then apply
-   [`bootstrap/root-application.yaml`](bootstrap/root-application.yaml). That
-   application watches `argocd/apps/`; every subsequent platform or workload
-   component is declared there and reconciled by Argo CD.
+The shared K3s platform is bootstrapped separately. Once it is healthy, apply
+[`bootstrap/root-application.yaml`](bootstrap/root-application.yaml). That
+application watches `argocd/apps/`; every Expense Tracker workload is declared
+there and reconciled by Argo CD.
