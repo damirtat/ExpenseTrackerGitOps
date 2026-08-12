@@ -5,3 +5,4 @@ resources:
   - cert-manager.yaml
   - doppler-kubernetes-operator.yaml
   - envoy-gateway.yaml
+  - edge-platform.yaml

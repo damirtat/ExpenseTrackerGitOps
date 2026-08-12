@@ -1,0 +1,16 @@
+apiVersion: secrets.doppler.com/v1alpha1
+kind: DopplerSecret
+metadata:
+  name: expense-tracker-cloudflare-dns
+  namespace: doppler-operator-system
+spec:
+  # This Kubernetes Secret is bootstrapped outside Git. Its read-only Doppler
+  # service token is scoped to expense-tracker-api/dev only.
+  tokenSecret:
+    name: expense-tracker-api-doppler-token
+  secrets:
+    - CLOUDFLARE_DNS_API_TOKEN
+  managedSecret:
+    name: cloudflare-dns-api-token
+    namespace: cert-manager
+    type: Opaque
