@@ -6,10 +6,25 @@ global:
 configs:
   cm:
     url: https://argocd.tatalovic.dev
+    oidc.config: |
+      name: Auth0
+      issuer: https://dev-xn7atexont37avle.us.auth0.com/
+      clientID: $argocd-auth0-oidc:ARGOCD_AUTH0_CLIENT_ID
+      clientSecret: $argocd-auth0-oidc:ARGOCD_AUTH0_CLIENT_SECRET
+      requestedScopes:
+        - openid
+        - profile
+        - email
   params:
     # Envoy Gateway will terminate public TLS later. Keeping Argo CD's internal
     # server on HTTP avoids double TLS termination inside the cluster.
     server.insecure: true
+  rbac:
+    # Authenticated users receive no permissions unless a policy grants them.
+    policy.default: ""
+    policy.csv: |
+      g, damir.tatalovic@gmail.com, role:admin
+    scopes: '[email]'
 
 server:
   service:
