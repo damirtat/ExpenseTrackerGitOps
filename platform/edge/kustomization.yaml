@@ -4,3 +4,4 @@ resources:
   - doppler-cloudflare-token.yaml
   - doppler-argocd-auth0.yaml
   - cluster-issuers.yaml
+  - argocd-staging-certificate.yaml
