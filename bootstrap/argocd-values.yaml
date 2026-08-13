@@ -10,7 +10,6 @@ configs:
     # Envoy Gateway will terminate public TLS later. Keeping Argo CD's internal
     # server on HTTP avoids double TLS termination inside the cluster.
     server.insecure: true
-
 server:
   service:
     type: ClusterIP
