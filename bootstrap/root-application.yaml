@@ -14,8 +14,6 @@ spec:
     repoURL: https://github.com/damirtat/ExpenseTrackerGitOps.git
     targetRevision: main
     path: argocd/apps
-    directory:
-      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
