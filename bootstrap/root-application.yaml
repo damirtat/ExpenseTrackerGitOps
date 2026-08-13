@@ -13,6 +13,9 @@ spec:
   source:
     repoURL: https://github.com/damirtat/ExpenseTrackerGitOps.git
     targetRevision: main
+    # Argo CD autodetects argocd/apps/kustomization.yaml. Do not add
+    # directory.recurse here: that makes Argo treat the Kustomization file as
+    # an ordinary Kubernetes resource instead of rendering it.
     path: argocd/apps
   destination:
     server: https://kubernetes.default.svc

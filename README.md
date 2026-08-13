@@ -55,5 +55,11 @@ See [architecture](docs/architecture.md), [roadmap](docs/roadmap.md), and the
 
 The shared K3s platform is bootstrapped separately. Once it is healthy, apply
 [`bootstrap/root-application.yaml`](bootstrap/root-application.yaml). That
-application watches `argocd/apps/`; every Expense Tracker workload is declared
-there and reconciled by Argo CD.
+application renders `argocd/apps/` as a Kustomize entrypoint. It currently
+declares only the Expense Tracker Argo Project. Add the API and web child Argo
+Applications there as their deployment manifests are introduced; Argo CD will
+then reconcile those applications continuously.
+
+During the one-time platform ownership handover, reconcile the root without
+pruning before re-enabling automated sync. This prevents it from deleting
+Applications that the shared platform root has already adopted.
