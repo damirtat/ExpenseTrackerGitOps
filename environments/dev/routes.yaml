@@ -1,0 +1,97 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: expense-tracker-web-http-redirect
+  namespace: expense-tracker
+  labels:
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: expense-tracker
+    environment: dev
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+spec:
+  parentRefs:
+    - name: argocd-public
+      namespace: argocd
+      sectionName: expense-tracker-dev-web-http
+  hostnames:
+    - dev.expenses.tatalovic.dev
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            port: 443
+            statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: expense-tracker-web-https
+  namespace: expense-tracker
+  labels:
+    app.kubernetes.io/component: web
+    app.kubernetes.io/part-of: expense-tracker
+    environment: dev
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+spec:
+  parentRefs:
+    - name: argocd-public
+      namespace: argocd
+      sectionName: expense-tracker-dev-web-https
+  hostnames:
+    - dev.expenses.tatalovic.dev
+  rules:
+    - backendRefs:
+        - name: expense-tracker-web
+          port: 80
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: expense-tracker-api-http-redirect
+  namespace: expense-tracker
+  labels:
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: expense-tracker
+    environment: dev
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+spec:
+  parentRefs:
+    - name: argocd-public
+      namespace: argocd
+      sectionName: expense-tracker-dev-api-http
+  hostnames:
+    - api.dev.expenses.tatalovic.dev
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            port: 443
+            statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: expense-tracker-api-https
+  namespace: expense-tracker
+  labels:
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: expense-tracker
+    environment: dev
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+spec:
+  parentRefs:
+    - name: argocd-public
+      namespace: argocd
+      sectionName: expense-tracker-dev-api-https
+  hostnames:
+    - api.dev.expenses.tatalovic.dev
+  rules:
+    - backendRefs:
+        - name: expense-tracker-api
+          port: 80

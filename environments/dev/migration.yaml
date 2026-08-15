@@ -1,0 +1,54 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: expense-tracker-api-migrate
+  namespace: expense-tracker
+  labels:
+    app.kubernetes.io/component: migration
+    app.kubernetes.io/part-of: expense-tracker
+    environment: dev
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  backoffLimit: 6
+  activeDeadlineSeconds: 900
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: migration
+        app.kubernetes.io/part-of: expense-tracker
+        environment: dev
+    spec:
+      restartPolicy: OnFailure
+      imagePullSecrets:
+        - name: ghcr-pull
+      initContainers:
+        - name: wait-for-postgres
+          image: postgres:15
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: expense-tracker-postgres
+          command:
+            - sh
+            - -c
+            - until pg_isready -h expense-tracker-postgres -U "$POSTGRES_USER" -d "$POSTGRES_DB"; do sleep 2; done
+      containers:
+        - name: migrate
+          image: ghcr.io/damirtat/expensetrackerapi/expense-tracker-api:sha-6b0809f89d4f18437a241a7b6982c1bd4303940a
+          imagePullPolicy: IfNotPresent
+          args:
+            - --migrate
+          envFrom:
+            - secretRef:
+                name: expense-tracker-api-runtime
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
