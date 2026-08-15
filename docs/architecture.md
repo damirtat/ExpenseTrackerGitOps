@@ -37,8 +37,9 @@ GitHub Actions -> GHCR -> GitOps image reference -> Argo CD -> K3s
 | --- | --- | --- |
 | GitHub Actions | test and publish immutable images | application repositories |
 | GHCR | retain published images | GitHub |
-| GitOps repository | desired platform and workload configuration | this repository |
-| K3s server configuration | host-level settings, including disabling bundled Traefik | tracked here, applied once by a cluster administrator |
+| Platform GitOps repository | desired shared-platform configuration | `K3sPlatformGitOps` |
+| Expense Tracker GitOps repository | desired application workloads and app-specific configuration | this repository |
+| K3s server configuration | host-level settings, including disabling bundled Traefik | `K3sPlatformGitOps`, applied once by a cluster administrator |
 | Argo CD | reconcile declared Git state to the cluster | K3s, bootstrapped once |
 | Envoy Gateway | public HTTP(S) routing | Argo CD after bootstrap |
 | cert-manager | TLS certificates using Cloudflare DNS validation | Argo CD after bootstrap |
@@ -70,6 +71,23 @@ availability or backup guarantee.
 Before production, the API will move to managed PostgreSQL. The API configuration
 will continue to consume a connection string from Doppler, so the application and
 deployment shape do not need to change when the provider changes.
+
+## Environment boundary
+
+The initial development environment uses the `expense-tracker` namespace, with every
+workload labeled `environment: dev`. Its runtime configuration comes from the
+dedicated `expense-tracker-api/dev_k3s` Doppler configuration. The Doppler Operator
+holds the read-only service token in its own namespace and creates target Secrets in
+`expense-tracker`; neither the token nor rendered secret values belong in Git.
+
+No production resources are created in this rollout. A future
+`expense-tracker-prod` environment will use a separate namespace, Doppler service
+token and configuration, database, routes, certificates, and credentials.
+
+Shared cluster services are deliberately not duplicated per application. The
+platform GitOps repository owns cert-manager, Envoy Gateway, Argo CD, and the Doppler
+Operator; this repository consumes those services through workload and route
+manifests.
 
 ## Deliberately deferred
 

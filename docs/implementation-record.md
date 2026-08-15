@@ -6,10 +6,37 @@ without reconstructing decisions from chat history.
 
 ## Current status
 
-**Active milestone:** K3s edge transition and cluster platform bootstrap
+**Active milestone:** Development application environment
 
-**Next milestone:** Apply the reviewed K3s edge configuration, then install Argo CD
-and bootstrap the cluster platform.
+**Next milestone:** Publish application images, then add the development database,
+API, web, Doppler sync, and routes as GitOps-managed application manifests.
+
+## 2026-08-15 - Shared platform bootstrap verified; development rollout bounded
+
+### Changed
+
+- Applied the tracked K3s Traefik disablement on the control-plane server and
+  bootstrapped the shared platform from `K3sPlatformGitOps`.
+- Established Envoy Gateway, cert-manager with Cloudflare DNS-01, Doppler Kubernetes
+  secret sync, and Auth0-protected Argo CD at `argocd.tatalovic.dev`.
+- Defined the first Expense Tracker environment as development-only:
+  `expense-tracker` namespace plus the dedicated Doppler `dev_k3s` configuration.
+- Reserved production for a later independent rollout; no production resources are
+  declared by this repository.
+
+### Validation
+
+- The shared Argo CD applications are Healthy and Synced after the cert-manager
+  reconciliation.
+- `argocd.tatalovic.dev` is reachable over publicly trusted HTTPS and requires the
+  configured Auth0 sign-in flow.
+
+### Follow-up
+
+- Publish immutable API and web images to GHCR without direct cluster credentials.
+- Add the development PostgreSQL StatefulSet, controlled migration Job, API, web,
+  Doppler secret definitions, and public development routes.
+- Record end-to-end validation evidence before starting production planning.
 
 ## 2026-08-09 - K3s edge transition declared
 
