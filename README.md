@@ -9,6 +9,12 @@ Application code is kept separate:
 - API: [`damirtat/ExpenseTrackerAPI`](https://github.com/damirtat/ExpenseTrackerAPI)
 - Web: [`damirtat/ExpenseTrackerWeb`](https://github.com/damirtat/ExpenseTrackerWeb)
 
+The shared cluster platform is kept separate as
+[`damirtat/K3sPlatformGitOps`](https://github.com/damirtat/K3sPlatformGitOps). It owns
+Argo CD, Envoy Gateway, cert-manager, and the Doppler Kubernetes Operator. This
+repository owns only Expense Tracker namespaces, database, application workloads,
+routes, and application secret definitions.
+
 ## Delivery model
 
 ```text
@@ -35,6 +41,20 @@ image that should run; Argo CD applies and continuously reconciles that state.
 `argocd.tatalovic.dev` is an administrative endpoint, not part of the public
 product. It will use Auth0 sign-in and Argo CD RBAC. No unauthenticated access or
 default administrator credentials will be used after bootstrap.
+
+## Environment boundary
+
+The first rollout is development only. It uses the `expense-tracker` namespace and
+the dedicated Doppler `expense-tracker-api/dev_k3s` configuration. Workloads are
+labeled `environment: dev` so the short namespace name is never treated as a
+production environment.
+
+Production is deliberately absent. When approved, it will use an independent
+`expense-tracker-prod` namespace, Doppler configuration and service token, database,
+TLS certificates, and routes. It will not share development credentials or data.
+
+See [ADR-0002](docs/decisions/ADR-0002-dev-environment-boundary.md) for the decision
+and its consequences.
 
 ## Repository rules
 

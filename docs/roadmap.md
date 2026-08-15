@@ -16,17 +16,17 @@ evidence has been recorded in `implementation-record.md`.
 
 - [x] Verify current K3s access and node health.
 - [x] Declare the K3s Traefik-to-Envoy transition in version control.
-- [ ] Apply the reviewed K3s Traefik disablement on the control-plane server.
-- [ ] Install Argo CD once with a reviewed bootstrap command.
-- [ ] Apply the root Argo CD application that watches this repository.
-- [ ] Add cert-manager with a Cloudflare DNS-01 `ClusterIssuer`.
-- [ ] Add Envoy Gateway and its public `Gateway`.
-- [ ] Add Doppler Kubernetes secret sync.
-- [ ] Configure `argocd.tatalovic.dev` with TLS, Auth0 OIDC, and deny-by-default RBAC.
+- [x] Apply the reviewed K3s Traefik disablement on the control-plane server.
+- [x] Install Argo CD once with a reviewed bootstrap command.
+- [x] Apply the root Argo CD application that watches this repository.
+- [x] Add cert-manager with a Cloudflare DNS-01 `ClusterIssuer`.
+- [x] Add Envoy Gateway and its public `Gateway`.
+- [x] Add Doppler Kubernetes secret sync.
+- [x] Configure `argocd.tatalovic.dev` with TLS, Auth0 OIDC, and deny-by-default RBAC.
 
 ## Milestone 2: Development application environment
 
-- [ ] Create `expense-tracker-dev` namespace and resource quotas.
+- [ ] Create the development-only `expense-tracker` namespace and resource quotas.
 - [ ] Deploy single-replica PostgreSQL with a persistent volume, marked development-only.
 - [ ] Store development database and application settings in Doppler.
 - [ ] Add API Deployment, Service, health probes, and controlled migration Job.
