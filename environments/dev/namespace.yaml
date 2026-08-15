@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: expense-tracker
+  labels:
+    app.kubernetes.io/part-of: expense-tracker
+    environment: dev
+    # Required by the shared platform Gateway's allowedRoutes selector.
+    platform.tatalovic.dev/public-gateway-access: "enabled"
+  annotations:
+    argocd.argoproj.io/sync-wave: "-20"
