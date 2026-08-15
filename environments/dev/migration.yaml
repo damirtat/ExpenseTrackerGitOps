@@ -34,7 +34,7 @@ spec:
           command:
             - sh
             - -c
-            - until pg_isready -h postgres -U "$POSTGRES_USER" -d "$POSTGRES_DB"; do sleep 2; done
+            - until pg_isready -h expense-tracker-postgres -U "$POSTGRES_USER" -d "$POSTGRES_DB"; do sleep 2; done
       containers:
         - name: migrate
           image: ghcr.io/damirtat/expensetrackerapi/expense-tracker-api:sha-6b0809f89d4f18437a241a7b6982c1bd4303940a

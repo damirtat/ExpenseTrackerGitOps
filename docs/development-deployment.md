@@ -24,7 +24,7 @@ from production.
 
 - The Namespace and DopplerSecret resources sync first.
 - PostgreSQL creates a single 10 GiB `local-path` PVC and stays internal to the
-  cluster as `postgres`.
+  cluster as `expense-tracker-postgres`.
 - The migration Job waits for PostgreSQL and runs the API image with `--migrate`.
 - The API and Web Deployments use immutable GHCR commit tags. Normal API replicas
   explicitly keep startup migrations disabled.
